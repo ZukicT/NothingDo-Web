@@ -51,12 +51,11 @@
   var image = root.querySelector("[data-preview-image]");
   var caption = root.querySelector("[data-preview-caption]");
   var dotsWrap = root.querySelector("[data-preview-dots]");
-  var thumbsWrap = root.querySelector("[data-preview-thumbs]");
   var carousel = root.querySelector("[data-preview-carousel]");
   var prevBtn = root.querySelector("[data-preview-prev]");
   var nextBtn = root.querySelector("[data-preview-next]");
 
-  if (!image || !caption || !dotsWrap || !thumbsWrap || !carousel) {
+  if (!image || !caption || !dotsWrap || !carousel) {
     return;
   }
 
@@ -74,35 +73,13 @@
       goTo(index, true);
     });
     dotsWrap.appendChild(dot);
-
-    var thumb = document.createElement("button");
-    thumb.type = "button";
-    thumb.className = "preview-thumb";
-    thumb.setAttribute("aria-label", slide.caption);
-    thumb.innerHTML =
-      '<img src="' + slide.src + '" alt="" width="72" height="156" loading="lazy">';
-    thumb.addEventListener("click", function () {
-      goTo(index, true);
-    });
-    thumbsWrap.appendChild(thumb);
   });
 
   var dots = dotsWrap.children;
-  var thumbs = thumbsWrap.children;
 
   function updateChrome() {
     for (var i = 0; i < dots.length; i++) {
       dots[i].classList.toggle("active", i === current);
-    }
-    for (var j = 0; j < thumbs.length; j++) {
-      thumbs[j].classList.toggle("active", j === current);
-      if (j === current && thumbs[j].scrollIntoView) {
-        thumbs[j].scrollIntoView({
-          behavior: motionReduced ? "auto" : "smooth",
-          inline: "center",
-          block: "nearest",
-        });
-      }
     }
   }
 

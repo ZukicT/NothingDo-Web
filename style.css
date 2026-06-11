@@ -422,41 +422,6 @@ button.btn { color: inherit; }
   transform: scale(1.25);
 }
 
-.preview-thumbs {
-  display: flex;
-  gap: 10px;
-  margin-top: 24px;
-  padding: 4px 2px 8px;
-  overflow-x: auto;
-  -webkit-overflow-scrolling: touch;
-  scroll-snap-type: x mandatory;
-}
-
-.preview-thumb {
-  flex: 0 0 auto;
-  padding: 4px;
-  border-radius: 14px;
-  border: 2px solid transparent;
-  background: transparent;
-  cursor: pointer;
-  scroll-snap-align: center;
-  opacity: 0.55;
-  transition: opacity var(--duration-ui) var(--ease-out), border-color var(--duration-ui) var(--ease-out);
-}
-
-.preview-thumb.active {
-  opacity: 1;
-  border-color: var(--red);
-}
-
-.preview-thumb img {
-  display: block;
-  width: 56px;
-  height: auto;
-  border-radius: 10px;
-  border: 1px solid var(--line);
-}
-
 /* ---------- support contact form ---------- */
 .contact-form {
   background: var(--panel);
