@@ -8,10 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../style.css">
+  <link rel="stylesheet" href="../style.css?v=7">
   <link rel="icon" type="image/png" href="../assets/favicon.png">
   <link rel="apple-touch-icon" href="../assets/logo.png">
   <script src="../dot-wave.js?v=3" defer></script>
+  <script src="../nav-mobile.js?v=1" defer></script>
 </head>
 <body>
 
@@ -20,11 +21,22 @@
       <a class="nav-logo" href="../index.html" data-home-top>
         <img src="../assets/logo.png" alt=""><span class="word">Nothing&nbsp;Do</span>
       </a>
-      <div class="nav-links">
+      <button
+        type="button"
+        class="nav-toggle"
+        aria-expanded="false"
+        aria-controls="site-nav-menu"
+        aria-label="Open menu"
+      >
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+        <span class="nav-toggle__bar" aria-hidden="true"></span>
+      </button>
+      <div class="nav-menu" id="site-nav-menu">
         <a class="pill" href="../index.html" data-home-top>Home</a>
         <a class="pill active" href="./">Support</a>
+        <a class="cta" href="../index.html#download">Get the app</a>
       </div>
-      <a class="cta" href="../index.html#download">Get the app</a>
     </nav>
   </div>
 
