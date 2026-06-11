@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Support | Nothing Do</title>
+  <meta name="description" content="Get help with the Nothing Do iOS app. Contact support and browse frequently asked questions.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../style.css">
+  <link rel="icon" type="image/png" href="../assets/favicon.png">
+  <link rel="apple-touch-icon" href="../assets/logo.png">
+  <script src="../dot-wave.js?v=3" defer></script>
+</head>
+<body>
+
+  <div class="nav-wrap">
+    <nav class="nav" aria-label="Main">
+      <a class="nav-logo" href="../index.html" data-home-top>
+        <img src="../assets/logo.png" alt=""><span class="word">Nothing&nbsp;Do</span>
+      </a>
+      <div class="nav-links">
+        <a class="pill" href="../index.html" data-home-top>Home</a>
+        <a class="pill active" href="./">Support</a>
+      </div>
+      <a class="cta" href="../index.html#download">Get the app</a>
+    </nav>
+  </div>
+
+  <main class="container">
+    <article class="doc" style="max-width: 860px;">
+      <p class="eyebrow mono">help</p>
+      <h1>Support</h1>
+      <p class="updated">We usually answer within 1 to 2 business days.</p>
+
+      <div class="support-grid">
+        <div class="card">
+          <div class="glyph">[@]</div>
+          <h3>Email us</h3>
+          <p>Questions, bug reports, or feature ideas? Email us and include your iOS version if something is broken.</p>
+          <p><a class="link" href="mailto:support@nothingdo.app">support@nothingdo.app →</a></p>
+        </div>
+        <div class="card">
+          <div class="glyph">[?]</div>
+          <h3>In-app feedback</h3>
+          <p>You can also send feedback directly from the app: open Settings and tap "Send Feedback".</p>
+          <p><a class="link" href="../index.html#download">Get the app →</a></p>
+        </div>
+      </div>
+
+      <form class="contact-form" id="supportForm">
+        <h3>Send us a message</h3>
+        <p class="form-note">Send a message straight to the team. No account needed.</p>
+        <div class="form-field">
+          <label class="mono" for="sf-name">Name</label>
+          <input id="sf-name" name="name" type="text" required maxlength="100" placeholder="Your name">
+        </div>
+        <div class="form-field">
+          <label class="mono" for="sf-email">Email (so we can reply)</label>
+          <input id="sf-email" name="email" type="email" required maxlength="200" placeholder="you@example.com">
+        </div>
+        <div class="form-field">
+          <label class="mono" id="sf-topic-label">Topic</label>
+          <div class="custom-select" data-custom-select>
+            <input type="hidden" name="topic" id="sf-topic" value="Bug report">
+            <button
+              type="button"
+              class="custom-select__trigger"
+              id="sf-topic-trigger"
+              aria-haspopup="listbox"
+              aria-expanded="false"
+              aria-labelledby="sf-topic-label sf-topic-value"
+            >
+              <span class="custom-select__value" id="sf-topic-value">Bug report</span>
+              <span class="custom-select__chevron" aria-hidden="true"></span>
+            </button>
+            <ul class="custom-select__list" id="sf-topic-list" role="listbox" aria-labelledby="sf-topic-label" hidden>
+              <li class="custom-select__option is-selected" role="option" data-value="Bug report" tabindex="-1" aria-selected="true">Bug report</li>
+              <li class="custom-select__option" role="option" data-value="Feature idea" tabindex="-1" aria-selected="false">Feature idea</li>
+              <li class="custom-select__option" role="option" data-value="Question" tabindex="-1" aria-selected="false">Question</li>
+              <li class="custom-select__option" role="option" data-value="Other" tabindex="-1" aria-selected="false">Other</li>
+            </ul>
+          </div>
+        </div>
+        <div class="form-field">
+          <label class="mono" for="sf-message">Message</label>
+          <textarea id="sf-message" name="message" required maxlength="1500" placeholder="What's going on? For bugs, include your iOS version."></textarea>
+        </div>
+        <div class="form-actions">
+          <button class="btn btn-red btn-submit" type="submit" id="sf-submit">Send message</button>
+          <span class="form-status" id="sf-status" role="status"></span>
+        </div>
+      </form>
+
+      <script>
+        (function () {
+          var ENDPOINT = 'https://discord.com/api/webhooks/1514511281854611468/zQOF_F02ZRstA350Qzy2i7XKwveEN9te85Hkh3q70Z08GNSaJhy8oulXYjfMZG0ef1Do';
+          var form = document.getElementById('supportForm');
+          var status = document.getElementById('sf-status');
+          var submit = document.getElementById('sf-submit');
+          var topicRoot = document.querySelector('[data-custom-select]');
+          var topicInput = document.getElementById('sf-topic');
+          var topicTrigger = document.getElementById('sf-topic-trigger');
+          var topicValue = document.getElementById('sf-topic-value');
+          var topicList = document.getElementById('sf-topic-list');
+          var topicOptions = Array.prototype.slice.call(topicList.querySelectorAll('.custom-select__option'));
+          var focusedIndex = 0;
+
+          function setTopic(value) {
+            topicInput.value = value;
+            topicValue.textContent = value;
+            topicOptions.forEach(function (option) {
+              var selected = option.dataset.value === value;
+              option.classList.toggle('is-selected', selected);
+              option.setAttribute('aria-selected', selected ? 'true' : 'false');
+              if (selected) {
+                focusedIndex = topicOptions.indexOf(option);
+              }
+            });
+          }
+
+          function closeTopicList() {
+            topicRoot.classList.remove('is-open');
+            topicTrigger.setAttribute('aria-expanded', 'false');
+            topicList.hidden = true;
+          }
+
+          function openTopicList() {
+            topicRoot.classList.add('is-open');
+            topicTrigger.setAttribute('aria-expanded', 'true');
+            topicList.hidden = false;
+          }
+
+          function toggleTopicList() {
+            if (topicList.hidden) {
+              openTopicList();
+            } else {
+              closeTopicList();
+            }
+          }
+
+          topicTrigger.addEventListener('click', function () {
+            toggleTopicList();
+          });
+
+          topicOptions.forEach(function (option) {
+            option.addEventListener('click', function () {
+              setTopic(option.dataset.value);
+              closeTopicList();
+              topicTrigger.focus();
+            });
+          });
+
+          topicTrigger.addEventListener('keydown', function (event) {
+            if (event.key === 'ArrowDown' || event.key === 'ArrowUp' || event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+            }
+
+            if (event.key === 'Enter' || event.key === ' ') {
+              if (topicList.hidden) {
+                openTopicList();
+              } else {
+                setTopic(topicOptions[focusedIndex].dataset.value);
+                closeTopicList();
+              }
+              return;
+            }
+
+            if (event.key === 'Escape') {
+              closeTopicList();
+              return;
+            }
+
+            if (!topicList.hidden && (event.key === 'ArrowDown' || event.key === 'ArrowUp')) {
+              if (event.key === 'ArrowDown') {
+                focusedIndex = (focusedIndex + 1) % topicOptions.length;
+              } else {
+                focusedIndex = (focusedIndex - 1 + topicOptions.length) % topicOptions.length;
+              }
+              topicOptions[focusedIndex].focus();
+            }
+          });
+
+          document.addEventListener('click', function (event) {
+            if (!topicRoot.contains(event.target)) {
+              closeTopicList();
+            }
+          });
+
+          form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            closeTopicList();
+            submit.disabled = true;
+            status.className = 'form-status';
+            status.textContent = 'Sending…';
+
+            var payload = {
+              username: 'Nothing Do Support',
+              embeds: [{
+                title: form.topic.value + ': ' + form.name.value,
+                description: form.message.value,
+                color: 14096673,
+                fields: [{ name: 'Reply to', value: form.email.value }],
+                timestamp: new Date().toISOString()
+              }]
+            };
+
+            fetch(ENDPOINT, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(payload)
+            }).then(function (res) {
+              if (!res.ok) throw new Error('HTTP ' + res.status);
+              status.className = 'form-status ok';
+              status.textContent = 'Sent. We will get back to you soon.';
+              form.reset();
+              setTopic('Bug report');
+            }).catch(function () {
+              status.className = 'form-status err';
+              status.textContent = 'Could not send. Please email support@nothingdo.app instead.';
+            }).finally(function () {
+              submit.disabled = false;
+            });
+          });
+        })();
+      </script>
+
+      <p class="section-label mono">frequently asked</p>
+      <div class="faq">
+        <details>
+          <summary>Is my data backed up anywhere?</summary>
+          <div class="answer">No. Nothing Do is local-first. Your tasks, habits, and settings live only on your iPhone. There are no accounts and no cloud sync, so keep your device backed up via iCloud or a computer backup if you want a safety net.</div>
+        </details>
+        <details>
+          <summary>I deleted the app. Can I recover my tasks?</summary>
+          <div class="answer">Deleting the app removes its locally stored data. We cannot recover it because we never had a copy. Restoring a full device backup made before the deletion is the only way back.</div>
+        </details>
+        <details>
+          <summary>Reminders aren't showing up. What should I check?</summary>
+          <div class="answer">Make sure notifications are allowed for Nothing Do in iOS Settings → Notifications, and that Focus modes or Scheduled Summary aren't holding them back. Reminders are local notifications scheduled on your device.</div>
+        </details>
+        <details>
+          <summary>Does Nothing Do track me or show ads?</summary>
+          <div class="answer">No. There are no analytics SDKs, no advertising identifiers, and no tracking of any kind. See our <a href="../privacy/">Privacy Policy</a> for the full details.</div>
+        </details>
+        <details>
+          <summary>Which devices are supported?</summary>
+          <div class="answer">Nothing Do is built for iPhone. It supports light and dark appearance and respects iOS accessibility settings like Reduce Motion.</div>
+        </details>
+      </div>
+    </article>
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="name"><img src="../assets/logo.png" alt="">Nothing Do</div>
+        <p>A local-first productivity app for tasks, habits, and focus timers on iPhone.</p>
+      </div>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4 class="mono">Site</h4>
+          <a href="../index.html" data-home-top>Home</a>
+          <a href="./">Support</a>
+          <a href="../index.html#previews">App previews</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="mono">Legal</h4>
+          <a href="../privacy/">Privacy Policy</a>
+          <a href="../terms/">Terms of Use</a>
+        </div>
+        <div class="footer-col">
+          <h4 class="mono">Contact</h4>
+          <a href="mailto:support@nothingdo.app">support@nothingdo.app</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Nothing Do. All rights reserved.</span>
+      <span class="mono">made for iphone</span>
+    </div>
+  </footer>
+
+</body>
+</html>
