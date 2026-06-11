@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=3">
+  <link rel="stylesheet" href="style.css?v=4">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/logo.png">
   <script src="dot-wave.js?v=3" defer></script>
@@ -105,10 +105,15 @@
       </div>
     </section>
 
-    <section class="banner">
-      <p class="section-label mono" style="text-align:center">privacy by design</p>
-      <h2>Your data never leaves <span class="red">your iPhone.</span></h2>
-      <p>No analytics SDKs, no ad identifiers, no tracking. What you write stays on your device. <a href="privacy/">Read the privacy policy</a>.</p>
+    <section class="banner" aria-labelledby="banner-heading">
+      <p class="section-label mono banner-label">private by default</p>
+      <h2 id="banner-heading">Your data never leaves <span class="red">your iPhone.</span></h2>
+      <p class="banner-lead">No account to create. No cloud to sync. No analytics watching what you do. Just tasks, habits, and focus that live on your phone.</p>
+      <div class="banner-actions">
+        <a class="btn btn-red" href="#download">Download on the App&nbsp;Store</a>
+        <a class="btn btn-ghost" href="#previews">See the app</a>
+      </div>
+      <p class="banner-foot mono">Local-first. <a href="privacy/">Privacy Policy</a></p>
     </section>
 
   </main>
